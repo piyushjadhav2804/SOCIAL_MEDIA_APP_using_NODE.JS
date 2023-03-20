@@ -1,0 +1,15 @@
+{
+  "name": "socialmediaapp",
+  "version": "1.0.0",
+  "description": "Social media application using Node.JS",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Piyush Jadhav",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
