@@ -5,5 +5,7 @@
 
 module.exports.home = function(req, res) {
 
-    return res.end('<h1>Express is up for social media application</h1>')
+    return res.render('home', {
+        title: 'Social Media App'
+    });
 }
