@@ -8,6 +8,8 @@ module.exports.create = function(req, res) {
         user: req.user._id
     });
 
+    req.flash('success', 'Post published');
+
     return res.redirect('back');
 }
 
@@ -25,6 +27,7 @@ module.exports.destroy = function(req, res) {
             Post.findByIdAndDelete(req.params.id).then(()=>{
                 
                 Comment.deleteMany({post: req.params.id}).then(() => {
+                    req.flash('success', 'Post deleted');
                     return res.redirect('back');
                 });
                 

@@ -11,10 +11,10 @@ module.exports.create = (req, res) => {
                 post: req.body.post,
                 user: req.user._id
             }).then((comment) => {
-                console.log('reached here~!!!!!!!!!!')
                 post.comments.push(comment); 
                 post.save();
                 console.log('comment added');
+                req.flash('success', 'Comment published');
                 res.redirect('back'); 
             });
         }       
@@ -32,6 +32,7 @@ module.exports.destroy = (req, res) => {
             Comment.findByIdAndDelete(req.params.id).then(() => {
 
                 Post.findByIdAndUpdate(postId, {$pull: {comments: req.params.id}}).then(() => {
+                    req.flash('success', 'Comment deleted');
                     return res.redirect('back');
                 })
             });
