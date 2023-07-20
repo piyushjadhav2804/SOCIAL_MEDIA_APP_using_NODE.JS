@@ -1,17 +1,16 @@
 <li id="post-<%= post._id %>">
     <p> 
-        <% if(locals.user && locals.user.id == post.user.id) { %>
+        <% if (locals.user && post.user && locals.user.id == post.user.id) { %>
             <small>
                 <a class="delete-post-button" href="/posts/destroy/<%= post.id %>">X</a>
             </small>
         <% } %>
 
         <%= post.content %>
-            <br>
-            <small>
-                <%= post.user.name %>
-            </small>
-        
+        <br>
+        <small>
+            <%= post.user ? post.user.name : 'Unknown' %>
+        </small>
     </p>
 
     <div class="posts-comments">

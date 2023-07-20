@@ -17,7 +17,7 @@
             <ul>
                 <% for(post of posts) { %>
     
-                    <%- include('_post') -%>
+                    <%- include('_post', { post: post, locals: locals }) -%>
     
                 <% } %>            
             </ul>
