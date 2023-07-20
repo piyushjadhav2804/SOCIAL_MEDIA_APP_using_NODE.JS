@@ -1,4 +1,6 @@
 const User = require('../models/user');
+const path = require('path');
+const fs = require('fs');
 
 module.exports.profile = (req, res) => {
 
@@ -12,16 +14,38 @@ module.exports.profile = (req, res) => {
     });
 }
 
-module.exports.update = (req, res) => {
+module.exports.update = async (req, res) => {
+  
+    if (req.user.id == req.params.id) {
+        
+        try {
+            let user = await User.findById(req.params.id);
+            User.uploadedAvatar(req, res, function(err) {
+                if(err) {console.log('error', err)}
 
-    if(req.user.id == req.params.id) {
+                user.name = req.body.name;
+                user.email = req.body.email;
 
-        User.findByIdAndUpdate(req.params.id, req.body).then((user) => {
-            return res.redirect('back');
-        });
+                if(req.file) {
+
+                    //saving the path of uploaded file into the avatar field of User
+                    user.avatar = User.avatarPath + '/' + req.file.filename;
+                }
+
+                user.save();
+
+                return res.redirect('back');
+            })
+        }
+
+        catch(err) {
+            req.flash('error', err);
+            return req.redirect('back');
+        }
     }
 
     else {
+        req.flash('error','Unauthorized');
         return res.status(401).send('Unauthorized');
     }
 }
@@ -30,7 +54,7 @@ module.exports.update = (req, res) => {
 module.exports.signUp = (req, res) => {
 
     if(req.isAuthenticated()) {
-        return res.redirect('/users/profile');
+        return res.redirect('/');
     }
 
     return res.render('user_sign_up', {
@@ -42,7 +66,7 @@ module.exports.signUp = (req, res) => {
 module.exports.signIn = (req, res) => {
 
     if(req.isAuthenticated()) {
-        return res.redirect('/users/profile');
+        return res.redirect('/');
     }
 
     return res.render('user_sign_in', {
